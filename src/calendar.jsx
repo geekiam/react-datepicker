@@ -43,6 +43,7 @@ var Calendar = React.createClass({
     onClickOutside: React.PropTypes.func.isRequired,
     onMonthChange: React.PropTypes.func,
     forceShowMonthNavigation: React.PropTypes.bool,
+    monthNavigation: React.PropTypes.bool,
     onDropdownFocus: React.PropTypes.func,
     onSelect: React.PropTypes.func.isRequired,
     openToDate: React.PropTypes.object,
@@ -193,7 +194,7 @@ var Calendar = React.createClass({
   },
 
   renderPreviousMonthButton () {
-    if (!this.props.forceShowMonthNavigation && allDaysDisabledBefore(this.state.date, 'month', this.props)) {
+    if (!this.props.forceShowMonthNavigation && allDaysDisabledBefore(this.state.date, 'month', this.props) || !this.props.monthNavigation) {
       return
     }
     return <a
@@ -202,7 +203,7 @@ var Calendar = React.createClass({
   },
 
   renderNextMonthButton () {
-    if (!this.props.forceShowMonthNavigation && allDaysDisabledAfter(this.state.date, 'month', this.props)) {
+    if (!this.props.forceShowMonthNavigation && allDaysDisabledAfter(this.state.date, 'month', this.props) || !this.props.monthNavigation) {
       return
     }
     return <a
@@ -211,6 +212,10 @@ var Calendar = React.createClass({
   },
 
   renderCurrentMonth (date = this.state.date) {
+    if (!this.props.monthNavigation) {
+      return
+    }
+
     var classes = ['react-datepicker__current-month']
     if (this.props.showYearDropdown) {
       classes.push('react-datepicker__current-month--hasYearDropdown')
